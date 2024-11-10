@@ -1,5 +1,46 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
+# TT09 I2C Bit Error Rate Tester (BERT)<br/>Echo ALU Peripheral
+
+> [!IMPORTANT]
+> My upstream project link maybe a better source of more up to date documentation. \
+> [See also original upstream project](https://github.com/dlmiles/tt05-i2c-bert)
+
+This project contains an updated version since
+[TT05 I2C Bert project link](https://github.com/dlmiles/tt05-i2c-bert).
+
+This TT09 includes (partial advancement since TT05 but full features due TT09):
+* The SCL pin is still on the new mapping. SCL=uio[4] which does conform
+with RP2040 I2C0.
+* The SDA OE half-cycle glitch between ACKNACK and SEND is removed it is
+thought to cause potential to disrupt SDA line state while SCL is high.
+* This implementation uses a generic 'Majority Voter 3-input' module for
+this mode of operation, not the SKY130 MAJ3 cell like in a previous edition.
+* The 'Majority Voter 5-input' was replaced with a proper implementation.
+* STRETCH was improved, but not fully working (as in data load/store after
+stretch is not expected to work, but the SCL state maybe seen).
+* ui[7] now allows MUX of uo[7:0] between 7seg register and accumulator
+register.
+* ui[6] should be logic-0 by default this is an additional negedge DFF in
+the SDA output, which I am not expecting to make any difference.
+* Configuration latches refactored into latch_config.v to help cleanup code,
+management of feature (so easier to be optional), support different technologies,
+including FPGA.
+* Configuration latches now have 4 delay-gate stages on pairs of bits with
+the ENA rise trigger.
+* SETLEDAC (set 7seg LED with current accumulator register)
+
+Features that did not make IHP0p2 but should be in TT09:
+* STRETCH_rd (not fully tested, data read after STRETCH not working)
+* STRETCH_wr (not fully tested, data write after STRETCH not working)
+* Mainly due to issues with Xilinx FPGA not building the project in the late
+stages of testing.
+
+While I made progress with building it on FPGA targetting Xilinx Arty-A7
+(see other repository for code changes) to validate against a real RP2040
+I2C hardware controller, this work is not complete.
+So maybe this is I2C like but does not yet conform to specification.
+
 # Tiny Tapeout Verilog Project Template
 
 - [Read the documentation for project](docs/info.md)

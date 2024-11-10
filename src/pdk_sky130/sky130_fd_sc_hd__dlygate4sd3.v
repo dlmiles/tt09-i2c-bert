@@ -280,9 +280,9 @@ module sky130_fd_sc_hd__dlygate4sd2_1 (
     buf buf0 (buf0_out_X, A              );
     buf buf1 (X         , buf0_out_X     );
 
-specify
-(A +=> X ) = (0:0:0,0:0:0);  // delays are tris,tfall
-endspecify
+//specify
+//(A +=> X ) = (0:0:0,0:0:0);  // delays are tris,tfall
+//endspecify
 endmodule
 `endcelldefine
 
